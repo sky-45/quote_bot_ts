@@ -1,0 +1,22 @@
+type Quote {
+  quote: String
+  author: String
+}
+
+
+type AddQuoteResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  quote: Quote
+}
+
+
+# definign queries and mutations 
+type Mutation {
+  addQuote(quote: String, author: String): AddQuoteResponse
+}
+
+type Query {
+  getQuote: Quote
+}

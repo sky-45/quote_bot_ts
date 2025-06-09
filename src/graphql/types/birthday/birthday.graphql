@@ -1,0 +1,7 @@
+type Birthday {
+  user: String!
+  year: Int!
+  month: Int!
+  day: Int!
+  addedBy: String!
+}

@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "rootDirs": ["src"],
+    "outDir": "dist",
+    "lib": ["es2020"],
+    "target": "es2020",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": false,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+  },
+    "include": [
+    "**/*.ts",
+    "src/graphql/types/quote/*.graphql"
+  ]
+}

@@ -1,0 +1,4 @@
+type Channel {
+  name: String!
+  addedBy: String!
+}
