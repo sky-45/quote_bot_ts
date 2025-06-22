@@ -1,0 +1,13 @@
+type ChatMessage {
+  userMessage: String!
+  userMessageID: String!
+  chatbotMessage: String!
+  chatbotMessageID: String!
+
+}
+
+type Chat {
+  userId: String!
+  chats: [ChatMessage]!
+  lastChatbotMessageID: String!
+}

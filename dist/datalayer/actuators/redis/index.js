@@ -12,9 +12,9 @@ class RedisController {
         }
     }
     // delay in seconds 
-    async setRedis(key, value, delay) {
+    async setRedis({ key, value, delay }) {
         try {
-            await redisClient.set(key, typeof value === 'object' ? JSON.stringify(value) : value, { EX: delay });
+            await redisClient.set(key, typeof value === 'object' ? JSON.stringify(value) : value, delay ? { EX: delay } : {});
             return { key, value };
         }
         catch (error) {

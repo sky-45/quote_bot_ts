@@ -26,7 +26,7 @@ export const updateAccessToken = async () => {
                 grant_type: 'client_credentials'
             }
         });
-        await RedisController.setRedis('bearer', access_token, expires_in);
+        await RedisController.setRedis({ key: 'bearer', value: access_token, delay: expires_in });
         return access_token;
     }
     catch (error) {
@@ -148,7 +148,7 @@ export const notifyChannelsLive = async (channels = [], chat) => {
                 const isNotified = await RedisController.getRedis(`Notified-${chann.name}`);
                 if (!isNotified) {
                     channelsPendingNotify.push(chann);
-                    await RedisController.setRedis(`Notified-${chann.name}`, 'true', 60 * 60 * 24);
+                    await RedisController.setRedis({ key: `Notified-${chann.name}`, value: 'true', delay: 60 * 60 * 24 });
                 }
             }
             else {

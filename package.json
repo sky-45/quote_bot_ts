@@ -5,13 +5,14 @@
     "@graphql-codegen/typescript-resolvers": "^4.5.1",
     "@types/node": "^22.15.30",
     "copyfiles": "^2.4.1",
+    "tsc-alias": "^1.8.16",
     "typescript": "^5.8.3"
   },
   "type": "module",
   "scripts": {
     "start": "npm run compile && node --import=specifier-resolution-node/register  ./dist/index.js",
     "generate": "graphql-codegen --config codegen.yml",
-    "compile": "npm run generate && tsc && copyfiles -u 1 src/graphql/types/**/*.graphql dist/"
+    "compile": "npm run generate && tsc && tsc-alias && copyfiles -u 1 src/graphql/types/**/*.graphql dist/"
   },
   "dependencies": {
     "@apollo/server": "^4.12.2",

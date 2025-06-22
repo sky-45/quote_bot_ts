@@ -31,6 +31,21 @@ export type Channel = {
   name: Scalars['String']['output'];
 };
 
+export type Chat = {
+  __typename?: 'Chat';
+  chats: Array<Maybe<ChatMessage>>;
+  lastChatbotMessageID: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
+};
+
+export type ChatMessage = {
+  __typename?: 'ChatMessage';
+  chatbotMessage: Scalars['String']['output'];
+  chatbotMessageID: Scalars['String']['output'];
+  userMessage: Scalars['String']['output'];
+  userMessageID: Scalars['String']['output'];
+};
+
 export type CreateQuoteResponse = {
   __typename?: 'CreateQuoteResponse';
   code: Scalars['String']['output'];
@@ -143,6 +158,8 @@ export type ResolversTypes = ResolversObject<{
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Channel: ResolverTypeWrapper<Channel>;
+  Chat: ResolverTypeWrapper<Chat>;
+  ChatMessage: ResolverTypeWrapper<ChatMessage>;
   CreateQuoteResponse: ResolverTypeWrapper<CreateQuoteResponse>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -157,6 +174,8 @@ export type ResolversParentTypes = ResolversObject<{
   String: Scalars['String']['output'];
   Int: Scalars['Int']['output'];
   Channel: Channel;
+  Chat: Chat;
+  ChatMessage: ChatMessage;
   CreateQuoteResponse: CreateQuoteResponse;
   Boolean: Scalars['Boolean']['output'];
   Mutation: {};
@@ -227,6 +246,21 @@ export type ChannelResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ChatResolvers<ContextType = any, ParentType extends ResolversParentTypes['Chat'] = ResolversParentTypes['Chat']> = ResolversObject<{
+  chats?: Resolver<Array<Maybe<ResolversTypes['ChatMessage']>>, ParentType, ContextType>;
+  lastChatbotMessageID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ChatMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['ChatMessage'] = ResolversParentTypes['ChatMessage']> = ResolversObject<{
+  chatbotMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  chatbotMessageID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  userMessage?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  userMessageID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type CreateQuoteResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateQuoteResponse'] = ResolversParentTypes['CreateQuoteResponse']> = ResolversObject<{
   code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -253,6 +287,8 @@ export type QuoteResolvers<ContextType = any, ParentType extends ResolversParent
 export type Resolvers<ContextType = any> = ResolversObject<{
   Birthday?: BirthdayResolvers<ContextType>;
   Channel?: ChannelResolvers<ContextType>;
+  Chat?: ChatResolvers<ContextType>;
+  ChatMessage?: ChatMessageResolvers<ContextType>;
   CreateQuoteResponse?: CreateQuoteResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

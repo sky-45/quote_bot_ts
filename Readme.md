@@ -12,7 +12,8 @@ Progress:
 - [x] Basic Graphql services to query quotes from client
 - [x] Discord bot integration
 - [x] Quote handler integration
-- [ ] Deep Seek model integration
+- [x] Deep Seek model integration
+- [ ] Deep Seek thread model integration
 - [ ] Birthday integration
 - [ ] Twitch integration to display live channels
 - [ ] Discord bot integration

@@ -1,8 +1,9 @@
 import { CronJob as cron } from 'cron';
 import { getCurrentTime, validate_dimelo } from '../../../utils';
-import { getTodayBirthdays } from '../../actuators/birthday';
-import { getLiveChannels, notifyChannelsLive } from '../../actuators/twitch';
-import { getRandomQuote } from '../../actuators/quote';
+import { getTodayBirthdays } from '../birthday';
+import { getLiveChannels, notifyChannelsLive } from '../twitch';
+import { getRandomQuote } from '../quote';
+import { handleChatMessage } from '../chat';
 const discordOnMesssage = async (msg, client) => {
     try {
         if (!msg?.author?.bot) {
@@ -14,6 +15,9 @@ const discordOnMesssage = async (msg, client) => {
                 const channel = msg.channel;
                 channel.send(randomQuote.quote);
             }
+            // actuator of chatgpt
+            if (msg.content.startsWith('!monsebot ') || msg.content.startsWith('!monsebotUpgrade ') || msg.reference?.messageId)
+                await handleChatMessage(msg);
             ////        if (msg.content.toLowerCase() === 'chiste monse' ) {
             ////          JokeController.getRandomMonseJoke().then((message)=>{
             ////            if(message)
@@ -61,9 +65,6 @@ const discordOnMesssage = async (msg, client) => {
             ////        if(msg.content.toLowerCase().includes('mide'))
             ////          await MeassureActuator(msg)
             ////
-            ////        // actuator of chatgpt
-            ////        if(msg.content.startsWith('!monsebot ') || msg.content.startsWith('!monseimagen ') || msg.content.startsWith('!monsebotUpgrade ') || msg.reference?.messageId)
-            ////          await ChatActuator(msg)
             ////      
             ////        if(msg.content.startsWith('!addStream '))
             ////          await TwitchActuator(msg)

@@ -12,6 +12,13 @@
     "isolatedModules": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@actuators/*": ["src/datalayer/actuators/*"],
+      "@models/*": ["src/datalayer/models/*"],
+      "@connections/*": ["src/connections/*"],
+       
+    }
   },
     "include": [
     "**/*.ts",

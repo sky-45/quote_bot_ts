@@ -2,6 +2,12 @@ import { redisClient } from '../../../connections/redis'
 
 import { getCurrentTime } from '../../../utils'	
 
+interface redisInput {
+  key: string,
+  value: string,
+  delay?: number
+}
+
 
 class RedisController {
   async getRedis (key: any) {
@@ -16,9 +22,9 @@ class RedisController {
   }
 
   // delay in seconds 
-  async setRedis(key: any, value: any, delay: number) {
+  async setRedis({key, value, delay}: redisInput) {
     try {
-      await redisClient.set(key, typeof value === 'object' ? JSON.stringify(value) : value,{EX: delay})
+      await redisClient.set(key, typeof value === 'object' ? JSON.stringify(value) : value, delay? {EX: delay}: {})
 
       return {key, value}
     } catch (error) {
