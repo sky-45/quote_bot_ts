@@ -1,4 +1,5 @@
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
@@ -7,12 +8,9 @@ import { loadFiles } from '@graphql-tools/load-files'
 
 import {getDiscordClient} from './connections/discord'
 
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 
-
+// setting variables for path calculation
 const __filename = fileURLToPath(import.meta.url);
-
 const __dirname = dirname(__filename);
 
 
@@ -38,16 +36,16 @@ const getServerApollo = async () => {
 const server = await getServerApollo();
 
 
-
+// start apollo server
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 },
 });
-
-
 console.log(`🚀 Apollo Server ready at: ${url}`);
 
+
+// start discord server
 const discordClient = await getDiscordClient()
 await discordClient.login(process.env.DISCORD_TOKEN);
 
 
-console.log(`🚀 Discord Server ready at: ${url}`);
+console.log(`🚀 Discord Server ready`);
