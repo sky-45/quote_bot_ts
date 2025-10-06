@@ -33,6 +33,7 @@ export type Channel = {
 
 export type Chat = {
   __typename?: 'Chat';
+  _id: Scalars['ID']['output'];
   chats: Array<Maybe<ChatMessage>>;
   lastChatbotMessageID: Scalars['String']['output'];
   userId: Scalars['String']['output'];
@@ -159,6 +160,7 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Channel: ResolverTypeWrapper<Channel>;
   Chat: ResolverTypeWrapper<Chat>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   ChatMessage: ResolverTypeWrapper<ChatMessage>;
   CreateQuoteResponse: ResolverTypeWrapper<CreateQuoteResponse>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -175,6 +177,7 @@ export type ResolversParentTypes = ResolversObject<{
   Int: Scalars['Int']['output'];
   Channel: Channel;
   Chat: Chat;
+  ID: Scalars['ID']['output'];
   ChatMessage: ChatMessage;
   CreateQuoteResponse: CreateQuoteResponse;
   Boolean: Scalars['Boolean']['output'];
@@ -247,6 +250,7 @@ export type ChannelResolvers<ContextType = any, ParentType extends ResolversPare
 }>;
 
 export type ChatResolvers<ContextType = any, ParentType extends ResolversParentTypes['Chat'] = ResolversParentTypes['Chat']> = ResolversObject<{
+  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   chats?: Resolver<Array<Maybe<ResolversTypes['ChatMessage']>>, ParentType, ContextType>;
   lastChatbotMessageID?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;

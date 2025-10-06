@@ -16,6 +16,21 @@ export const getChatbotAnswer = async (question) => {
         throw new Error(error);
     }
 };
+export const getChatbotThreadAnswer = async (thread) => {
+    try {
+        const model = await getChatbotModel();
+        const { data: { message: { content } } } = await axios.post(`${URL_CHAT_API}/api/chat`, {
+            model,
+            messages: thread,
+            stream: false
+        });
+        return content;
+    }
+    catch (error) {
+        console.log(`Error ChatController-getChatbotAnswer:`, error);
+        throw new Error(error);
+    }
+};
 export const getChatbotModel = async (newModel = undefined) => {
     const model = newModel ? newModel : await RedisController.getRedis('currentModelLLM') || 'llama3:8b';
     await RedisController.setRedis({ key: 'currentModelLLM', value: model });

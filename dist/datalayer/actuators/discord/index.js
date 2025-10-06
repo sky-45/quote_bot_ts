@@ -2,7 +2,7 @@ import { CronJob as cron } from 'cron';
 import { getCurrentTime, validate_dimelo } from '../../../utils';
 import { getTodayBirthdays } from '../birthday';
 import { getLiveChannels, notifyChannelsLive } from '../twitch';
-import { getRandomQuote } from '../quote';
+import { getRandomQuote, createQuote } from '../quote';
 import { handleChatMessage } from '../chat';
 const discordOnMesssage = async (msg, client) => {
     try {
@@ -30,11 +30,12 @@ const discordOnMesssage = async (msg, client) => {
             ////              msg.channel.send(message);
             ////          });
             ////        }
-            ////        if (msg.content.startsWith('!agregar ')) {
-            ////          let message = msg.content.substring('!agregar '.length);
-            ////          QuoteController.addMessage(message, msg.author.username);
-            ////          msg.reply('Mensaje Añadido!!!')
-            ////        }
+            if (msg.content.startsWith('!agregar ')) {
+                let message = msg.content.substring('!agregar '.length);
+                const res_TEst = await createQuote({ quote: message, author: msg.author.username });
+                console.log('res_TEst', res_TEst);
+                msg.reply('Mensaje Añadido!!!');
+            }
             ////      
             ////        if (msg.content.includes('!dimeloTodo') || msg.content.includes('!dímeloTodo')) {
             ////         QuoteController.getAllMessages().then((messages)=>{

@@ -17,6 +17,7 @@
       "@actuators/*": ["src/datalayer/actuators/*"],
       "@models/*": ["src/datalayer/models/*"],
       "@connections/*": ["src/connections/*"],
+      "@graph_types/*": ["src/graphql/__generated__/*"]
        
     }
   },

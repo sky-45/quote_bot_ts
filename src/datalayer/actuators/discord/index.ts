@@ -5,7 +5,7 @@ import {getCurrentTime, validate_dimelo} from '../../../utils';
 
 import {getTodayBirthdays} from '@actuators/birthday';
 import {getLiveChannels, notifyChannelsLive} from '@actuators/twitch'
-import {getRandomQuote} from '@actuators/quote';
+import {getRandomQuote, createQuote} from '@actuators/quote';
 import {handleChatMessage} from '@actuators/chat'
 
 
@@ -36,11 +36,11 @@ const discordOnMesssage = async (msg:Message, client:Client) => {
 ////              msg.channel.send(message);
 ////          });
 ////        }
-////        if (msg.content.startsWith('!agregar ')) {
-////          let message = msg.content.substring('!agregar '.length);
-////          QuoteController.addMessage(message, msg.author.username);
-////          msg.reply('Mensaje Añadido!!!')
-////        }
+        if (msg.content.startsWith('!agregar ')) {
+          let message = msg.content.substring('!agregar '.length);
+          await createQuote({quote:message, author: msg.author.username});
+          msg.reply('Mensaje Añadido!!!')
+        }
 ////      
 ////        if (msg.content.includes('!dimeloTodo') || msg.content.includes('!dímeloTodo')) {
 ////         QuoteController.getAllMessages().then((messages)=>{

@@ -189,7 +189,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
 
       for(const livechannel of channelsPendingNotify){
         await chat.send({ 
-          content: '@everyone  Monses ' + livechannel + ' esta en vivo: https://twitch.tv/' + livechannel +' !'
+          content: '@everyone  Monses ' + livechannel.name + ' esta en vivo: https://twitch.tv/' + livechannel.name +' !'
         }).catch((err:any) => {
             console.error(err);
         });

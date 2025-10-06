@@ -2,9 +2,11 @@
 
 import { Message, TextChannel } from 'discord.js';
 
-import {getChatbotAnswer} from '@connections/ollama'
+import {getChatbotAnswer, getChatbotThreadAnswer} from '@connections/ollama'
 
 import ChatModel from '@models/Chat'
+import {Chat} from '@graph_types/types'
+
 
 export const handleChatMessage = async (msg: Message) => {
   try {
@@ -40,14 +42,111 @@ export const handleChatMessage = async (msg: Message) => {
         messageID: discordChatResponse?.id
       }
       
-      const newchat = await addNewChat({userId: msg.author.id,userMessage, chatbotMessage})
+      await addNewChat({userId: msg.author.id,userMessage, chatbotMessage})
 
     }
+    else if (msg.reference?.messageId) {
+      const chatThread = await checkThreadExists(msg)
+
+      if(!chatThread) return 
+
+      const channel = msg.channel as TextChannel
+      channel.sendTyping()
+
+      const threadFormated = formatThreadChat(chatThread, msg)
+      const response = await getChatbotThreadAnswer(threadFormated) || '' 
+
+      let discordChatResponse = {id:''}
+
+      if(response.length <= 1900)
+        discordChatResponse = await msg.reply({ content: '```' + response + '```' })
+      else {
+        const rounds = Math.floor(response.length/1900)
+        for(let i=0; i<=rounds; i++) {
+          const text = response.substring(i*1900,(i+1)*1900)
+          discordChatResponse = await msg.reply({ content: '```' + text + '```' })
+        }
+      }
+
+      await updateChatThread(chatThread, msg, response, discordChatResponse.id)
+    }
+
   } catch (error) {
     await msg.reply({ content: '```' + 'Error getting a response, try later monse...' + '```' })
   }
 }
 
+const updateChatThread = async (chatThread: Chat, msg: Message, response: string, responseId: string) => {
+  try {
+    const updatedChats = [
+      ...chatThread.chats,
+      {
+        userMessage: msg.content,
+        userMessageID: msg.id,
+        chatbotMessage: response,
+        chatbotMessageID: responseId
+      }
+    ]
+
+    const newThread = await ChatModel.findByIdAndUpdate(chatThread._id,
+      { $set: {
+        chats: updatedChats,
+        lastChatbotMessageID: responseId
+        }
+      },
+      { 'new': true }
+    ).lean()
+
+    return newThread
+
+  } catch (error) {
+    console.log('Error ChatController-updateChatThread:', error)
+  }
+}
+
+
+
+const formatThreadChat = (thread:Chat, msg: Message) => {
+  try {
+    const messages = []
+
+    thread.chats.forEach((chatMsg) => {
+      if (chatMsg && chatMsg.userMessage !== undefined && chatMsg.chatbotMessage !== undefined) {
+        messages.push(
+          {
+            role: 'user',
+            content: chatMsg.userMessage
+          },
+          {
+            role: 'assistant',
+            content: chatMsg.chatbotMessage
+          }
+        )
+      }
+    })
+
+    messages.push({
+      role: 'user',
+      content: msg.content
+    })
+      
+    return messages
+    
+  } catch (error) {
+    console.log('Error ChatController-formatThreadChat:', error)
+  }
+}
+
+const checkThreadExists = async (msg: Message) => {
+  try {
+    const thread  = await ChatModel.findOne({ lastChatbotMessageID: msg?.reference?.messageId })
+    if(thread) return thread
+
+    return false
+  } catch (error) {
+    console.log('Error ChatController-checkThreadExists:', error)
+  }
+}
 
 
 const addNewChat = async ({userId, userMessage, chatbotMessage}:any) => {
@@ -71,4 +170,4 @@ const addNewChat = async ({userId, userMessage, chatbotMessage}:any) => {
     } catch (error) {
       console.log(`Error ChatController-addNewChat:`, error)
     }
-  }
+}
