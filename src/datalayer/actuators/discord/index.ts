@@ -130,7 +130,7 @@ const discordCronJobs = async (client:Client) => {
 
   });
 
-  const sendStreamReminder = new cron('*/10 * * * * *', async () => {
+  const sendStreamReminder = new cron('*/30 * * * * *', async () => {
     try {
       const guild = client.guilds.cache.get('366511816358232072');
       if (guild) {

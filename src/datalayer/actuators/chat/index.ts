@@ -2,7 +2,7 @@
 
 import { Message, TextChannel } from 'discord.js';
 
-import {getChatbotAnswer, getChatbotThreadAnswer} from '@connections/ollama'
+import {getChatbotAnswer, getChatbotThreadAnswer, cleanResponseQwenModel} from '@connections/ollama'
 
 import ChatModel from '@models/Chat'
 import {Chat} from '@graph_types/types'
@@ -17,7 +17,9 @@ export const handleChatMessage = async (msg: Message) => {
       const channel = msg.channel as TextChannel
       
       channel.sendTyping()
-      const response = await getChatbotAnswer(question) || ''
+      let response = await getChatbotAnswer(question) || ''
+      response = cleanResponseQwenModel(response)
+
 
       let discordChatResponse
       if(response.length <= 1900)
@@ -54,7 +56,8 @@ export const handleChatMessage = async (msg: Message) => {
       channel.sendTyping()
 
       const threadFormated = formatThreadChat(chatThread, msg)
-      const response = await getChatbotThreadAnswer(threadFormated) || '' 
+      let response = await getChatbotThreadAnswer(threadFormated) || '' 
+      response = cleanResponseQwenModel(response)
 
       let discordChatResponse = {id:''}
 

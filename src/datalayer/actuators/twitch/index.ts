@@ -1,6 +1,13 @@
 
 import axios from 'axios';
 import { Error } from 'mongoose';
+import axiosRetry from 'axios-retry';
+
+axiosRetry(axios, {
+  retries: 3,
+  retryDelay: axiosRetry.exponentialDelay
+});
+
 
 import RedisController from '../redis'
 import ChannelModel from '../../models/Channel';
@@ -33,7 +40,8 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
             client_id: CLIENT_ID,
             client_secret: CLIENT_SECRET,
             grant_type: 'client_credentials'
-          }
+          },
+          
         }
       )
 
@@ -106,7 +114,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
       return channels_status.filter((el) =>el !== false)
 
     } catch (error) {
-      console.log(`[${getCurrentTime()}] Error TwitchController-getChannels:`, error?.message)
+      console.log(`[${getCurrentTime()}] Error TwitchController-getChannels:`, error?.message, error)
       return []
     }
   }

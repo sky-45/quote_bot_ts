@@ -28,7 +28,7 @@ const getAllQuotes = async (): Promise<Quote[]> => {
 const createQuote = async (input: Quote): Promise<Quote> => {
   try {
     const newQuote = {
-      quote: input.quote,
+      quote: '```' + input.quote + '```',
       author: input.author
     }
     return await QuoteModel.create(newQuote)

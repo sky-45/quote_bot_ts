@@ -1,5 +1,10 @@
 import axios from 'axios';
 import { Error } from 'mongoose';
+import axiosRetry from 'axios-retry';
+axiosRetry(axios, {
+    retries: 3,
+    retryDelay: axiosRetry.exponentialDelay
+});
 import RedisController from '../redis';
 import ChannelModel from '../../models/Channel';
 import { getCurrentTime } from '../../../utils';
@@ -24,7 +29,7 @@ export const updateAccessToken = async () => {
                 client_id: CLIENT_ID,
                 client_secret: CLIENT_SECRET,
                 grant_type: 'client_credentials'
-            }
+            },
         });
         await RedisController.setRedis({ key: 'bearer', value: access_token, delay: expires_in });
         return access_token;
@@ -87,7 +92,7 @@ export const getChannels = async (channels, live_only = false) => {
         return channels_status.filter((el) => el !== false);
     }
     catch (error) {
-        console.log(`[${getCurrentTime()}] Error TwitchController-getChannels:`, error?.message);
+        console.log(`[${getCurrentTime()}] Error TwitchController-getChannels:`, error?.message, error);
         return [];
     }
 };

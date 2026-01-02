@@ -32,8 +32,7 @@ const discordOnMesssage = async (msg, client) => {
             ////        }
             if (msg.content.startsWith('!agregar ')) {
                 let message = msg.content.substring('!agregar '.length);
-                const res_TEst = await createQuote({ quote: message, author: msg.author.username });
-                console.log('res_TEst', res_TEst);
+                await createQuote({ quote: message, author: msg.author.username });
                 msg.reply('Mensaje Añadido!!!');
             }
             ////      
@@ -116,7 +115,7 @@ const discordCronJobs = async (client) => {
             console.log(`[${getCurrentTime()}] Error sendMessageDailySimple:`, error);
         }
     });
-    const sendStreamReminder = new cron('*/10 * * * * *', async () => {
+    const sendStreamReminder = new cron('*/30 * * * * *', async () => {
         try {
             const guild = client.guilds.cache.get('366511816358232072');
             if (guild) {

@@ -23,7 +23,7 @@ const getAllQuotes = async () => {
 const createQuote = async (input) => {
     try {
         const newQuote = {
-            quote: input.quote,
+            quote: '```' + input.quote + '```',
             author: input.author
         };
         return await QuoteModel.create(newQuote);

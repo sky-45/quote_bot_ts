@@ -31,6 +31,18 @@ export const getChatbotThreadAnswer = async (thread) => {
         throw new Error(error);
     }
 };
+export const cleanResponseQwenModel = (answer) => {
+    if (answer.includes('<think>') && answer.includes('</think>')) {
+        const text_list = answer.split('</think>');
+        if (text_list.length >= 1) {
+            return text_list[1];
+        }
+        else {
+            text_list[1];
+        }
+    }
+    return answer;
+};
 export const getChatbotModel = async (newModel = undefined) => {
     const model = newModel ? newModel : await RedisController.getRedis('currentModelLLM') || 'llama3:8b';
     await RedisController.setRedis({ key: 'currentModelLLM', value: model });
