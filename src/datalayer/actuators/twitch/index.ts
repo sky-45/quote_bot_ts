@@ -3,16 +3,19 @@ import axios from 'axios';
 import { Error } from 'mongoose';
 import axiosRetry from 'axios-retry';
 
+
+
+import RedisController from '@actuators/redis/index.js'
+import ChannelModel from '@models/Channel.js';
+
+import { getCurrentTime} from '@utils/index.js'
+
+
 axiosRetry(axios, {
   retries: 3,
   retryDelay: axiosRetry.exponentialDelay
 });
 
-
-import RedisController from '../redis'
-import ChannelModel from '../../models/Channel';
-
-import { getCurrentTime} from '../../../utils'
 
 const { CLIENT_ID, CLIENT_SECRET } = process.env
 
@@ -26,7 +29,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
 
       return access_token
 
-    } catch (error) {
+    } catch (error:any) {
       console.log('error', error)
       throw new Error(error)
     }
@@ -49,7 +52,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
 
       return access_token
 
-    } catch (error) {
+    } catch (error:any) {
       console.log(`[${getCurrentTime()}] Error TwitchController-updateAccessToken:`, error?.message)
     }
   }
@@ -77,7 +80,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
         is_live
       }
 
-    } catch (error) {
+    } catch (error:any) {
       console.log(`[${getCurrentTime()}] Error TwitchController-getChannel:`, error?.message)
     }
   }
@@ -113,7 +116,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
 
       return channels_status.filter((el) =>el !== false)
 
-    } catch (error) {
+    } catch (error:any) {
       console.log(`[${getCurrentTime()}] Error TwitchController-getChannels:`, error?.message, error)
       return []
     }
@@ -136,7 +139,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
 
       return 'Canal ' + query + ' añadido correctamente !'
 
-    } catch (error) {
+    } catch (error:any) {
       console.log(`[${getCurrentTime()}] Error TwitchController-addChannel:`, error)
     }
   }
@@ -146,7 +149,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
       const followedChannels = await ChannelModel.find().lean()
 
       return followedChannels
-    } catch (error) {
+    } catch (error:any) {
       console.log(`[${getCurrentTime()}] Error TwitchController-getFollowedChannels:`, error)
     }
   }
@@ -165,7 +168,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
       }
      
       return liveChannels
-    } catch (error) {
+    } catch (error:any) {
       console.log(`[${getCurrentTime()}] Error TwitchController-getLiveChannels:`, error)
       return []
     }
@@ -203,7 +206,7 @@ const { CLIENT_ID, CLIENT_SECRET } = process.env
         });
       }
 
-    } catch (error) {
+    } catch (error:any) {
       console.log(`[${getCurrentTime()}] Error TwitchController-notifyChannelsLive:`, error)
       return []
     }

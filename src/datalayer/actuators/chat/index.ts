@@ -2,10 +2,10 @@
 
 import { Message, TextChannel } from 'discord.js';
 
-import {getChatbotAnswer, getChatbotThreadAnswer, cleanResponseQwenModel} from '@connections/ollama'
+import {getChatbotAnswer, getChatbotThreadAnswer, cleanResponseQwenModel} from '@connections/ollama/index.js'
 
-import ChatModel from '@models/Chat'
-import {Chat} from '@graph_types/types'
+import ChatModel from '@models/Chat.js'
+import {Chat} from '@graph_types/types.js'
 
 
 export const handleChatMessage = async (msg: Message) => {

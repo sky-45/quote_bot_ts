@@ -6,7 +6,7 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import { mergeResolvers, mergeTypeDefs } from '@graphql-tools/merge'
 import { loadFiles } from '@graphql-tools/load-files'
 
-import {getDiscordClient} from './connections/discord'
+import {getDiscordClient} from '@connections/discord/index.js'
 
 
 // setting variables for path calculation

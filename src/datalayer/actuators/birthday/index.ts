@@ -1,10 +1,10 @@
 
-import BirthdayModel from '../../models/Birthday'
+import BirthdayModel from '@models/Birthday.js'
 
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc.js'
 
-import { getCurrentTime, MONTHS_LABEL} from '../../../utils'
+import { getCurrentTime, MONTHS_LABEL} from '@utils/index.js'
 
 dayjs.extend(utc)
 

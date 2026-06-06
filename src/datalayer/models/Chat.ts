@@ -2,8 +2,8 @@
 
 
 import { Schema } from 'mongoose'
-import {connectionMongoDB} from '../../connections/mongodbConnection'
-import {Chat, ChatMessage} from '../../graphql/__generated__/types'
+import {connectionMongoDB} from '@connections/mongodbConnection/index.js'
+import {Chat, ChatMessage} from '@graph_types/types.js'
 
 const messageSchema = new Schema<ChatMessage>({
   userMessage: { type: String, required : true },

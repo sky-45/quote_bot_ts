@@ -1,6 +1,6 @@
 
-import { QueryResolvers } from '../../__generated__/types';
-import {getRandomQuote, getAllQuotes} from '../../../datalayer/actuators/quote';
+import { QueryResolvers } from '@graph_types/types.js';
+import {getRandomQuote, getAllQuotes} from '@actuators/quote/index.js';
 
 export const Query: QueryResolvers = {
   getQuote: async (_, {}, { dataSources }) => {

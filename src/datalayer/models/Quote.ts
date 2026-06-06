@@ -1,7 +1,7 @@
 
 import { Schema } from 'mongoose'
-import {connectionMongoDB} from '../../connections/mongodbConnection'
-import {Quote} from '../../graphql/__generated__/types'
+import {connectionMongoDB} from '@connections/mongodbConnection/index.js'
+import {Quote} from '@graph_types/types.js'
 
 const QuoteSchema = new Schema({
   quote: {

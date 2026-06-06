@@ -1,5 +1,5 @@
-import { createQuote } from '../../../datalayer/actuators/quote/index.js';
-import { MutationResolvers } from '../../__generated__/types.js';
+import { createQuote } from '@actuators/quote/index.js';
+import { MutationResolvers } from '@graph_types/types.js';
 
 export const Mutation:MutationResolvers = {
   createQuote: async (_, input, { dataSources }) => {

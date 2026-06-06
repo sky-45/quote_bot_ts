@@ -1,7 +1,7 @@
 
 import { Schema } from 'mongoose'
-import {connectionMongoDB} from '../../connections/mongodbConnection'
-import {Birthday} from '../../graphql/__generated__/types'
+import {connectionMongoDB} from '@connections/mongodbConnection/index.js'
+import {Birthday} from '@graph_types/types.js'
 
 const BirthdaySchema = new Schema({
   user: {

@@ -1,6 +1,6 @@
-import { redisClient } from '../../../connections/redis'
+import { redisClient } from '@connections/redis/index.js'
 
-import { getCurrentTime } from '../../../utils'	
+import { getCurrentTime } from '@utils/index.js'	
 
 interface redisInput {
   key: string,

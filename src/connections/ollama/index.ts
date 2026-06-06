@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-import RedisController from '@actuators/redis'
+import RedisController from '@actuators/redis/index.js'
 
 const {URL_CHAT_API = 'http://localhost:11434'} = process.env
 
@@ -20,7 +20,7 @@ export const getChatbotAnswer = async (question:string) => {
 
       return response as string
       
-    } catch (error) {
+    } catch (error:any) {
       console.log(`Error ChatController-getChatbotAnswer:`, error)
       throw new Error(error);
     }
@@ -41,7 +41,7 @@ export const getChatbotThreadAnswer = async (thread:any) => {
 
       return content as string
       
-    } catch (error) {
+    } catch (error:any) {
       console.log(`Error ChatController-getChatbotAnswer:`, error)
       throw new Error(error);
     }

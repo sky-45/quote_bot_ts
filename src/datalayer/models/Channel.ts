@@ -1,7 +1,7 @@
 
 import { Schema } from 'mongoose'
-import {connectionMongoDB} from '../../connections/mongodbConnection'
-import {Channel} from '../../graphql/__generated__/types'
+import {connectionMongoDB} from '@connections/mongodbConnection/index.js'
+import {Channel} from '@graph_types/types.js'
 
 const ChannelSchema = new Schema({
   name : {

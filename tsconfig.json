@@ -2,27 +2,36 @@
   "compilerOptions": {
     "rootDirs": ["src"],
     "outDir": "dist",
-    "lib": ["es2020"],
     "target": "es2020",
-    "module": "es2022",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    // "types": ["node"],
+    // "isolatedModules": false,
+
     "esModuleInterop": true,
-    "types": ["node"],
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "isolatedModules": false,
+
+    "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "baseUrl": ".",
+
+    "baseUrl": "./",
     "paths": {
       "@actuators/*": ["src/datalayer/actuators/*"],
       "@models/*": ["src/datalayer/models/*"],
       "@connections/*": ["src/connections/*"],
-      "@graph_types/*": ["src/graphql/__generated__/*"]
-       
+      "@graph_types/*": ["src/graphql/__generated__/*"],
+      "@utils/*": ["src/utils/*"]
     }
   },
     "include": [
-    "**/*.ts",
+    "src/**/*.ts",
     "src/graphql/types/quote/*.graphql"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }

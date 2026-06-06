@@ -1,5 +1,5 @@
-import { QuoteModel} from '../../models/Quote.js';
-import { Quote} from '../../../graphql/__generated__/types';
+import { QuoteModel} from '@models/Quote.js';
+import { Quote} from '@graph_types/types.js';
 
 const getRandomQuote = async (): Promise<Quote> => {
   try {

@@ -1,12 +1,12 @@
 import {Client, GatewayIntentBits, Events, Message, TextChannel  } from 'discord.js';
 import {CronJob as cron} from 'cron'
 
-import {getCurrentTime, validate_dimelo} from '../../../utils';
+import {getCurrentTime, validate_dimelo} from '@utils/index.js';
 
-import {getTodayBirthdays} from '@actuators/birthday';
-import {getLiveChannels, notifyChannelsLive} from '@actuators/twitch'
-import {getRandomQuote, createQuote} from '@actuators/quote';
-import {handleChatMessage} from '@actuators/chat'
+import {getTodayBirthdays} from '@actuators/birthday/index.js';
+import {getLiveChannels, notifyChannelsLive} from '@actuators/twitch/index.js'
+import {getRandomQuote, createQuote} from '@actuators/quote/index.js';
+import {handleChatMessage} from '@actuators/chat/index.js'
 
 
 const discordOnMesssage = async (msg:Message, client:Client) => {

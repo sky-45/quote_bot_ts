@@ -1,50 +1,32 @@
-# FISRT STAGE FOR BUILDING
+# === STAGE 1: Build Environment ===
 FROM node:20-alpine AS builder
-
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
+# Leverage caching for dependencies
+COPY package*.json ./
+RUN npm ci
 
-# Copy project files
+# Copy source and compile TypeScript to JavaScript
 COPY . .
-
-# Build TypeScript
 RUN npm run compile
 
-# Second stage for productions
-FROM node:20-alpine
+# === STAGE 2: Production Environment ===
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-COPY --from=builder /app/package.json /app/package-lock.json ./
+# Install timezone data (Kept from your original)
+RUN apk add --no-cache tzdata
+ENV TZ=America/Lima
+
+# Copy package files to install ONLY production dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy ONLY the compiled code from the builder stage
 COPY --from=builder /app/dist ./dist
 
-ARG MONGO_CONNECTION
-ENV MONGO_CONNECTION $MONGO_CONNECTION
-
-ARG DISCORD_TOKEN
-ENV DISCORD_TOKEN $DISCORD_TOKEN
-
-ARG URL_JOKE_API
-ENV URL_JOKE_API $URL_JOKE_API
-
-ARG CLIENT_ID
-ENV CLIENT_ID $CLIENT_ID
-
-ARG CLIENT_SECRET
-ENV CLIENT_SECRET $CLIENT_SECRET
-
-
-
-RUN apk add --no-cache tzdata
-ENV TZ America/Lima
-
-
-RUN npm install
-
+# Expose the app port
 EXPOSE 3000
 
-CMD ["node", "--import=specifier-resolution-node/register", "dist/index.js"]
-
+# Cleansed CMD (Removed the deprecated specifier-resolution-node loader)
+CMD ["node", "dist/index.js"]

@@ -55,6 +55,7 @@ volumes:
   redis_data:
   ollama_storage:
     name: ollama # Links to your existing 'ollama' named volume so you don't lose downloaded models
+    external: true # 👈 Tell Compose to use the pre-existing volume
 
 networks:
   bot_network:

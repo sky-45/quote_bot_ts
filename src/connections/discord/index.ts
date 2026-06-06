@@ -1,6 +1,6 @@
 import {Client, GatewayIntentBits, Events } from 'discord.js';
 
-import {discordCronJobs, discordOnMesssage} from '../../datalayer/actuators/discord'
+import {discordCronJobs, discordOnMesssage} from '@actuators/discord/index.js'
 
 
 
