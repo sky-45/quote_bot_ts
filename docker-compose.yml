@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    # We remove host network and let compose manage internal routing
+    networks:
+      - bot_network
+    volumes:
+      - redis_data:/data
+    # Optional: Only uncomment if you need to access Redis from OUTSIDE the VM
+    # ports:
+    #   - "6379:6379"
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: always
+    environment:
+      - OLLAMA_NUM_PARALLEL=1
+    networks:
+      - bot_network
+    volumes:
+      - ollama_storage:/root/.ollama
+    ports:
+      - "11434:11434"
+    # This automatically downloads the model if it's missing, then starts the server
+    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama run qwen3:8b && tail -f /dev/null"]
+
+  quotebot:
+    image: sky45/quote_bot_v2:latest
+    container_name: quotebot_v2
+    restart: always
+    platform: linux/amd64 # Matches your original run command
+    ports:
+      - "3000:3000"
+    networks:
+      - bot_network
+    environment:
+      # IMPORTANT: Update your bot's configuration/code to use these hostnames 
+      - MONGO_CONNECTION=${MONGO_CONNECTION}
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - URL_REDIS=redis://redis:6379 
+      - URL_CHAT_API=http://ollama:11434
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      
+    depends_on:
+      - redis
+      - ollama
+
+volumes:
+  redis_data:
+  ollama_storage:
+    name: ollama # Links to your existing 'ollama' named volume so you don't lose downloaded models
+
+networks:
+  bot_network:
+    driver: bridge
