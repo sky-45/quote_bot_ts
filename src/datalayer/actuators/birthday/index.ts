@@ -8,6 +8,31 @@ import { getCurrentTime, MONTHS_LABEL} from '@utils/index.js'
 
 dayjs.extend(utc)
 
+  export const handleBirthdayMessage = async (msg:any) => {
+    try {
+      if (msg.content.startsWith('!agregarCumple' )) {
+        const birhtdayMessage = await addBirthday(msg.content, msg.author.username);
+        msg.channel.send(birhtdayMessage);
+      }
+
+      if (msg.content.trim() == '!saludarCumple' ) {
+        const birhtdayMessages = await getTodayBirthdays();
+
+        for (let elem of birhtdayMessages) {
+          await msg.channel.send('@everyone Monses Feliciten a ' + elem.user + ' por sus terribles ' + elem.years +' años !');
+        }
+      }
+
+      if (msg.content.trim() == '!cumples') {
+        const birhtdayMessages = await getAllBirthdays();
+        const finalMessage_ = formatAllBirthdays(birhtdayMessages)
+        msg.channel.send('```' + finalMessage_ + '```')
+      }
+
+    } catch (error) {
+      console.log(`[${getCurrentTime()}] Error handling birthday message:`, error)
+    }
+  }
 
   export const getAllBirthdays = async () => {
     try {

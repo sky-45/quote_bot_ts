@@ -27,7 +27,7 @@ services:
     ports:
       - "11434:11434"
     # This automatically downloads the model if it's missing, then starts the server
-    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama run qwen3:8b && tail -f /dev/null"]
+    entrypoint: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama run qcwind/qwen3-8b-instruct-Q4-K-M && tail -f /dev/null"]
 
   quotebot:
     image: sky45/quote_bot_v2:latest

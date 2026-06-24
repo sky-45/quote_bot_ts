@@ -14,7 +14,11 @@ export const getChatbotAnswer = async (question:string) => {
         {
           model,
           prompt: question,
-          stream: false
+          stream: false,
+          options: {
+            num_thread: 4,
+            num_ctx: 1024,
+          }
         }
       )
 
@@ -35,7 +39,11 @@ export const getChatbotThreadAnswer = async (thread:any) => {
         {
           model,
           messages: thread,
-          stream: false
+          stream: false,
+          options: {
+            num_thread: 4,
+            num_ctx: 1024,
+          }
         }
       )
 

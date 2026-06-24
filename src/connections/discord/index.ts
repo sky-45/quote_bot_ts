@@ -16,10 +16,15 @@ const getDiscordClient = async () => {
 
   //ReadyBot
   discordClient.on('ready', async (client) => {
+    try {
       console.log('Logged in.')
       client.user.setStatus('online')
       // start cron jobs
       await discordCronJobs(client);
+    } catch (error) {
+      console.log('Error setting up cron jobs')
+    }
+
   });
 
       //onMessage

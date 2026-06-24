@@ -3,7 +3,7 @@ import {CronJob as cron} from 'cron'
 
 import {getCurrentTime, validate_dimelo} from '@utils/index.js';
 
-import {getTodayBirthdays} from '@actuators/birthday/index.js';
+import {getTodayBirthdays, handleBirthdayMessage} from '@actuators/birthday/index.js';
 import {getLiveChannels, notifyChannelsLive} from '@actuators/twitch/index.js'
 import {getRandomQuote, createQuote} from '@actuators/quote/index.js';
 import {handleChatMessage} from '@actuators/chat/index.js'
@@ -63,9 +63,9 @@ const discordOnMesssage = async (msg:Message, client:Client) => {
 ////        if(msg.content.toLowerCase().includes('cambio'))
 ////          await CurrencyActuator(msg)
 ////      
-////        // actuator of birthdaysss
-////        if(msg.content.toLowerCase().includes('cumple'))
-////          await BirthdayActuator(msg)
+          // actuator of birthdaysss
+          if(msg.content.toLowerCase().includes('cumple'))
+            await handleBirthdayMessage(msg)
 ////      
 ////        // actuator of memideee
 ////        if(msg.content.toLowerCase().includes('mide'))
@@ -84,70 +84,75 @@ const discordOnMesssage = async (msg:Message, client:Client) => {
 
 
 const discordCronJobs = async (client:Client) => {
-  const sendMessageDailyEveryone = new cron('0 0 * * *', async () => {
-    try {
-      const guild = client.guilds.cache.get('366511816358232072');
+  try {
+    const sendMessageDailyEveryone = new cron('0 0 * * *', async () => {
+      try {
+        const guild = client.guilds.cache.get('366511816358232072');
 
-      if (guild) {
-        const ch = guild.channels.cache.get('366511816358232075') as TextChannel;
-        if(!ch) return;
+        if (guild) {
+          const ch = guild.channels.cache.get('366511816358232075') as TextChannel;
+          if(!ch) return;
 
-        const birthdays = await getTodayBirthdays();
-      
-        for (let elem of birthdays) {
-          await ch.send({ 
-            content: '@everyone Monses feliciten a ' + elem.user + ' por sus terribles ' + elem.years +' años !'
-          }).catch(err => {
-              console.error(err);
-          });
+          const birthdays = await getTodayBirthdays();
+        
+          for (let elem of birthdays) {
+            await ch.send({ 
+              content: '@everyone Monses feliciten a ' + elem.user + ' por sus terribles ' + elem.years +' años !'
+            }).catch(err => {
+                console.error(err);
+            });
+          }
         }
+      } catch (error) {
+        console.log(`[${getCurrentTime()}] Error sendMessageDailyEveryone:`, error)
       }
-    } catch (error) {
-      console.log(`[${getCurrentTime()}] Error sendMessageDailyEveryone:`, error)
-    }
 
-  });
+    });
 
-  const sendMessageDailySimple = new cron('0 10,18 * * *', async () => {
-    try {
-      const guild = client.guilds.cache.get('366511816358232072');
+    const sendMessageDailySimple = new cron('0 10,18 * * *', async () => {
+      try {
+        const guild = client.guilds.cache.get('366511816358232072');
 
-      if (guild) {
-        const ch = guild.channels.cache.get('366511816358232075') as TextChannel;
-        const birthdays = await getTodayBirthdays();
-      
-        for (let elem of birthdays) {
-          await ch.send({ 
-            content: '```' + 'Monses Feliciten a ' + elem.user + ' por sus terribles ' + elem.years +' años !' + '```'
-          }).catch(err => {
-              console.error(err);
-          });
+        if (guild) {
+          const ch = guild.channels.cache.get('366511816358232075') as TextChannel;
+          const birthdays = await getTodayBirthdays();
+        
+          for (let elem of birthdays) {
+            await ch.send({ 
+              content: '```' + 'Monses Feliciten a ' + elem.user + ' por sus terribles ' + elem.years +' años !' + '```'
+            }).catch(err => {
+                console.error(err);
+            });
+          }
         }
+      } catch (error) {
+        console.log(`[${getCurrentTime()}] Error sendMessageDailySimple:`, error)
       }
-    } catch (error) {
-      console.log(`[${getCurrentTime()}] Error sendMessageDailySimple:`, error)
-    }
 
-  });
+    });
 
-  const sendStreamReminder = new cron('*/30 * * * * *', async () => {
-    try {
-      const guild = client.guilds.cache.get('366511816358232072');
-      if (guild) {
-        const ch = guild.channels.cache.get('366521521117593600');
-        const liveChannels = await getLiveChannels();
-        if(liveChannels.length)
-          await notifyChannelsLive(liveChannels, ch)
+    const sendStreamReminder = new cron('*/30 * * * * *', async () => {
+      try {
+        const guild = client.guilds.cache.get('366511816358232072');
+        if (guild) {
+          const ch = guild.channels.cache.get('366521521117593600');
+          const liveChannels = await getLiveChannels();
+          if(liveChannels.length)
+            await notifyChannelsLive(liveChannels, ch)
+        }
+      } catch (error) {
+        console.log(`[${getCurrentTime()}] Error sendStreamReminder:`, error)
       }
-    } catch (error) {
-      console.log(`[${getCurrentTime()}] Error sendStreamReminder:`, error)
-    }
 
-  });
+    });
 
-  sendMessageDailyEveryone.start();
-  sendMessageDailySimple.start();
-  sendStreamReminder.start();
+    sendMessageDailyEveryone.start();
+    sendMessageDailySimple.start();
+    sendStreamReminder.start();
+  } catch (error) {
+    console.log(`[${getCurrentTime()}] Error setting up cronjobs:`, error)
+  }
+
 }
 
 export {
